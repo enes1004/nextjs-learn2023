@@ -22,7 +22,7 @@ export default function Home({ allPostsData,context }) {
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>SomeOne</p>
+        <p>Lorem Ipsum tests preview function on vercel</p>
         <p>
           (This is a sample website - you’ll be building a site like this on{' '}
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
