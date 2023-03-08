@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma db seed  && npx next build",
+    "build": "next build",
     "start": "next start"
   },
   "prisma":{
