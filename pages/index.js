@@ -4,12 +4,12 @@ import Layout, { siteTitle } from '../components/layout';
 import Date from '../components/date';
 import utilStyles from '../styles/utils.module.css';
 
-import { getSortedPostsData } from '../lib/posts';
+import { getSortedPostsDataForStatic } from '../lib/posts';
 
-export async function getServerSideProps(context) {
-  const allPostsData = await getSortedPostsData();
+export async function getStaticProps(context) {
+  console.log("get again getSortedPostsDataForStatic");
+  const allPostsData = await getSortedPostsDataForStatic();
   const data=JSON.parse(JSON.stringify(allPostsData));;
-  console.log(data);
   return {
     props: {
       data,
@@ -33,12 +33,19 @@ export default function Home({ data,context }) {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
        <h2 className={utilStyles.headingLg}>Blog</h2>
        <ul className={utilStyles.list}>
-         {data.map(({ id, date, title }) => (
+         {data.map(({ id, created_at, title,author,content_group }) => (
            <li className={utilStyles.listItem} key={id}>
-             <Link href={`/posts/${id}`}>{title}</Link>
+             <Link href={`/posts/${id}`}>{title}
+              <br/>
+              <div className={utilStyles.lightText}>
+                By {(author?.name)??"Anonymous"}
+              </div>
+            </Link>
              <br />
+
              <small className={utilStyles.lightText}>
-               <Date dateString={date} />
+               <Date dateString={created_at} />
+               &emsp;in {content_group?.description.replace("_","/")}
              </small>
            </li>
          ))}
