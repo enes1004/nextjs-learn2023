@@ -8,6 +8,11 @@ import { authOptions } from '../api/auth/[...nextauth]'
 import { useSession } from "next-auth/react"
 import { useState,useEffect } from "react";
 
+// export async function getServerSideProps(info){
+//   console.log(info);
+//   return {props:{}};
+// }
+
 export default function Post({ postData }) {
   const session=useSession();
   const [hideContent,setHideContent]=useState(false);
