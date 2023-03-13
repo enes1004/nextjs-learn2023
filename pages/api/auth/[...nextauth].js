@@ -88,5 +88,6 @@ export const authOptions = {
     providers,
     callbacks
 }
+authOptions.secret=process.env.NEXTAUTH_SECRET;
 
 export default NextAuth(authOptions)
