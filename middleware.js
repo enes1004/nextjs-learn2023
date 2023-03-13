@@ -5,3 +5,5 @@ export { default } from 'next-auth/middleware';
 //     authorized: ({ token }) => {console.log(token);return !!token},
 //   },
 // })
+
+export const config = { secret:process.env.NEXTAUTH_SECRET }
