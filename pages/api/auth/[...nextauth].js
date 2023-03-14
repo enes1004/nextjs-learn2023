@@ -40,27 +40,36 @@ const providers = [
     }
 ];
 
-const callbacks = {
+var callbacks = {
   async jwt({ token, user, account, profile, isNewUser }) {
      if (account) {
        token.account = {
          ...account,
-         access_token: user.access_token  // <-- add token to JWT (Next's) object
        };
+       token.token=account.access_token  // <-- add token to JWT (Next's) object
      }
      if(profile){
        token.profile ={...profile};
      }
-     return token;
+      return token;
    },
    async session({ session, token }) {
      const {user,...other}=session;
-     return { ...other,user:{...user,...token.profile}};
+     return { ...other,user:{...user,...token.profile},token:token.token};
    },
+   async redirect({ url, baseUrl }) {
+     // Allows relative callback URLs
+     console.log("url",url);
+     console.log("url",baseUrl);
+     if (url.startsWith("/posts")) return `${baseUrl}${url}`
+     // Allows callback URLs on the same origin
+     else if (new URL(url).origin === baseUrl) return url
+     return baseUrl
+   }
 }
 
 callbacks.signIn = async function signIn({ user, account, profile, email, credentials }) {
-    console.log({ user, account, profile, email, credentials });
+    console.log("signin",{ user, account, profile, email, credentials });
 
     if (account.provider === 'laravel') {
         return !!user;
@@ -88,6 +97,6 @@ export const authOptions = {
     providers,
     callbacks
 }
-authOptions.secret=process.env.NEXTAUTH_SECRET;
+// authOptions.secret=process.env.NEXTAUTH_SECRET;
 
 export default NextAuth(authOptions)
