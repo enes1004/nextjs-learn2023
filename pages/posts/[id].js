@@ -3,7 +3,7 @@ import { getAllPostIds, getPostData,getPostDataForCaching,getAllPostIdsForCachin
 import Head from 'next/head';
 import Date from '../../components/date';
 import utilStyles from '../../styles/utils.module.css';
-import { useContentGroupAuth,useContentAuthorAuth } from "../../auth/authorize"
+import { useContentGroupAuth,useContentAuthorAuth,authByApi } from "../../auth/authorize"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { useSession } from "next-auth/react"
 import { useState,useEffect } from "react";
@@ -16,13 +16,15 @@ import { useState,useEffect } from "react";
 export default function Post({ postData }) {
   const session=useSession();
   const [hideContent,setHideContent]=useState(false);
+
   const can_see_by_content_group=useContentGroupAuth(postData?.content_group_id,session?.data?.user);
   const can_see_by_author=useContentAuthorAuth(postData?.user_id,session?.data?.user);
   useEffect(()=>{
-    if(session && session.state!="loading"){
+    if(session && session.status!="loading"){
       if(!can_see_by_author && !can_see_by_content_group){
         setHideContent(true);
       }
+      console.log("api_auth",authByApi(postData.id,session));
     }
   },[session]);
 
@@ -60,6 +62,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   console.log("get again getPostDataForCaching");
+
   const postData = await getPostDataForCaching(params.id);
   // const session= JSON.parse(JSON.stringify(await getServerSession(req, res, authOptions)))
   return {
