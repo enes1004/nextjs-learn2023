@@ -22,7 +22,6 @@ export default function Post({ postData }) {
         {postData?<Date dateString={postData.created_at} />:null}
       </div>
       <div dangerouslySetInnerHTML={{ __html: postData?.content }} />
-      <div>{JSON.stringify(session.data)}</div>
   </Layout>;
 }
 
