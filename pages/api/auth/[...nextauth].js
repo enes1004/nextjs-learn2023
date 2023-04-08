@@ -30,7 +30,6 @@ const providers = [
       },
       userinfo:process.env.NEXT_PUBLIC_LARAVEL_API + "/api/user",
        profile: (profile,tokens) => {
-         console.log(profile);
          return profile;
        },
        idToken:false,
@@ -59,8 +58,6 @@ var callbacks = {
    },
    async redirect({ url, baseUrl }) {
      // Allows relative callback URLs
-     console.log("url",url);
-     console.log("url",baseUrl);
      if (url.startsWith("/posts")) return `${baseUrl}${url}`
      // Allows callback URLs on the same origin
      else if (new URL(url).origin === baseUrl) return url
@@ -69,7 +66,6 @@ var callbacks = {
 }
 
 callbacks.signIn = async function signIn({ user, account, profile, email, credentials }) {
-    console.log("signin",{ user, account, profile, email, credentials });
 
     if (account.provider === 'laravel') {
         return !!user;
