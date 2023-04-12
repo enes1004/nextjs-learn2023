@@ -4,7 +4,6 @@ import { fetchTheme } from "../themes/funcs/fetchTheme";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { FormControl, MenuItem, Select } from "@mui/material";
-import { makeStyles } from '@mui/styles';
 import css from "styled-jsx/css";
 
 
