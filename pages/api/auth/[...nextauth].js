@@ -1,4 +1,5 @@
 import NextAuth from "next-auth"
+import { validateSessionUpdate } from "../../../auth/session/validate_update";
 // import jwt from "jsonwebtoken"
 
 
@@ -40,7 +41,7 @@ const providers = [
 ];
 
 var callbacks = {
-  async jwt({ token, user, account, profile, isNewUser }) {
+  async jwt({ token, user, account, profile, isNewUser,trigger,session }) {
      if (account) {
        token.account = {
          ...account,
@@ -50,11 +51,18 @@ var callbacks = {
      if(profile){
        token.profile ={...profile};
      }
+     if(trigger==="update"){
+      if(!token.userSet){token.userSet={};}
+        const validChanges=validateSessionUpdate({...session});
+        Object.keys(validChanges).map((i)=>{
+          token.userSet[i]=validChanges[i];
+        })
+     }
       return token;
    },
    async session({ session, token }) {
      const {user,...other}=session;
-     return { ...other,user:{...user,...token.profile},token:token.token};
+     return { ...other,userSet:token.userSet,user:{...user,...token.profile},token:token.token};
    },
    async redirect({ url, baseUrl }) {
      // Allows relative callback URLs
