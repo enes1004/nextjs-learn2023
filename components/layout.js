@@ -2,14 +2,32 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from './layout.module.css';
 import utilStyles from '../styles/utils.module.css';
+import styled, { createGlobalStyle } from 'styled-components';
 import Link from 'next/link';
+
+const GlobalStyle = createGlobalStyle`
+  a{
+    ${props=>props?.theme?.link}
+  }
+  h1,h2,h3,h4,h5,h6,p,span,div{
+    color:${props=>props?.theme?.color?.primary}
+  }
+`
 
 const name = 'Enes';
 export const siteTitle = 'Next.js Sample Website';
+const LayoutBg=styled.div`
+  background-color: ${props=>props?.theme?.bg?.secondary};
+`;
+const BodyBg=styled.div`
+  background-color: ${props=>props?.theme?.bg?.primary};
+`;
 
-export default function Layout({ children, home }) {
+export default function Layout({ children, home,className }) {
   return (
-    <div className={styles.container}>
+  <BodyBg>
+    <GlobalStyle/>
+    <LayoutBg className={`${styles.container} ${className}` }>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -64,6 +82,7 @@ export default function Layout({ children, home }) {
           <Link href="/">← Back to home</Link>
         </div>
       )}
-    </div>
+    </LayoutBg>
+  </BodyBg>
   );
-}
+};

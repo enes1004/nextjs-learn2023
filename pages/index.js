@@ -1,10 +1,10 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import Layout, { siteTitle } from '../components/layout';
 import Date from '../components/date';
 import utilStyles from '../styles/utils.module.css';
 
-import { getSortedPostsDataForStatic } from '../lib/posts';
+import { getSortedPostsDataForStatic } from '../lib/post';
+import Link from 'next/link';
 
 export async function getStaticProps(context) {
   console.log("get again getSortedPostsDataForStatic");
@@ -35,7 +35,7 @@ export default function Home({ data,context }) {
        <ul className={utilStyles.list}>
          {data.map(({ id, created_at, title,author,content_group }) => (
            <li className={utilStyles.listItem} key={id}>
-             <Link href={`/posts/${id}`}>{title}
+             <Link href={`/post/${id}`}>{title}
               <br/>
               <div className={utilStyles.lightText}>
                 By {(author?.name)??"Anonymous"}
