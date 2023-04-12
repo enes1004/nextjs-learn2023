@@ -7,7 +7,7 @@ import { middlewareMap } from './auth/enabled';
 export default withAuth(
   // secret,
   async function middleware(req,res ) {
-    const url=req.url;
+    const url=req.nextUrl.pathname;
     const token=req.nextauth.token;
     const auth_action=await middlewareMap.map(async(action)=>await action({token,url,res,req})).find(i=>i) || false;
     // if action exists, return it
@@ -23,5 +23,7 @@ export default withAuth(
 })
 
 export const config = {
-  matcher: '/posts/:path*',
+  matcher: [
+    '/post/:path*',
+  ]
 };

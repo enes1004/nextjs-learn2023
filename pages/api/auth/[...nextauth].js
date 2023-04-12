@@ -58,7 +58,7 @@ var callbacks = {
    },
    async redirect({ url, baseUrl }) {
      // Allows relative callback URLs
-     if (url.startsWith("/posts")) return `${baseUrl}${url}`
+     if (url.startsWith("/post")) return `${baseUrl}${url}`
      // Allows callback URLs on the same origin
      else if (new URL(url).origin === baseUrl) return url
      return baseUrl

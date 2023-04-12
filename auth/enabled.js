@@ -1,5 +1,5 @@
-import { postsMiddleware } from "./middlewares/posts";
+import { postMiddleware } from "./middlewares/post";
 
 export const middlewareMap=[
-    postsMiddleware
+    postMiddleware
 ]
