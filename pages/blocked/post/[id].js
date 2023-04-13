@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Head from 'next/head';
 import Layout from '../../../components/layout';
-import { getPostDataForBlocked } from '../../../lib/post';
+import { getAllPostIdsForCaching, getPostDataForBlocked } from '../../../lib/post';
 import PurchButton from '../../../components/purch_button';
 
 export default function Blocked({contentGroup}) {
@@ -29,8 +29,10 @@ export async function getStaticProps({params}){
 }
 
 export async function getStaticPaths(){
+  const paths = await getAllPostIdsForCaching();
   return {
-    paths:[],
-    fallback: false
+    paths,
+    fallback: true,
   };
+
 }
