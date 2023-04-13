@@ -17,7 +17,7 @@ export async function postMiddleware({url,token,req}){
     }
 
     if(!fb){
-       return NextResponse.rewrite(new URL("/blocked"+url, req.url))
+       return NextResponse.redirect(new URL("/blocked"+url, req.url))
     }
     else if(!cache){
         // writeCache({url,fb,res,req});
