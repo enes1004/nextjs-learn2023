@@ -12,8 +12,6 @@ export const OptionThemed=({onClick,value,valueName,children})=>{
     useEffect(()=>{
         const resolver= async ()=>{
             const themeInfoNew=await fetchTheme(valueName);
-            console.log(valueName);
-            console.log(themeInfoNew);
             setThemeInfo(themeInfoNew);
         }
         resolver();
@@ -40,17 +38,32 @@ export const OptionThemed=({onClick,value,valueName,children})=>{
 };
 
 
-export const ThemeSelector = ({themeName,setThemeName})=>{
-    const { data: session, status,update } = useSession()
+export const ThemeSelector = ({setTheme})=>{
+    const {  data:session, status,update } = useSession()
+    console.log("session",session);
+    const [themeName, setThemeName] = useState("");    
     const changeTheme = (newName)=>{
         if(newName!=themeName){
-            setThemeName(newName);
-            update(newName);
+            update({themeSelected:newName});
         }
     }
+    const setThemeAsync = async (newThemeName)=>{
+        const newTheme=await fetchTheme(newThemeName);
+        setTheme(newTheme);
+    }
 
+    useEffect(()=>{
+        update();
+    },[]);
+    useEffect(()=>{
+        const themeNow=session?.userSet?.themeSelected??enabledThemes[0];
+        setThemeName(themeNow);
+        console.log(themeNow)
+        setThemeAsync(themeNow);
+    },[session?.userSet?.themeSelected]);
+ 
 
-return <FormControl>
+return themeName?<FormControl>
     <Select value={themeName}>
 
         {enabledThemes.map(i=>
@@ -58,5 +71,5 @@ return <FormControl>
         )}
     </Select>
     </FormControl>
-
+    :null;
 }
