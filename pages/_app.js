@@ -1,37 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
 import '../styles/global.css';
-import { SessionProvider } from "next-auth/react"
 import {  ThemeProvider } from 'styled-components';
-import { enabledThemes } from '../themes/funcs/enabledThemes';
-import { fetchTheme } from '../themes/funcs/fetchTheme';
 import { ThemeSelector } from '../components/theme_selector';
+import { useState } from 'react';
+import { SessionProvider } from 'next-auth/react';
 export const runtime = "nodejs";
 
 
 export default function App({
     Component,
-    pageProps: { session, ...pageProps },
+    pageProps:pageProps,
   }) {
-    const oldTheme=session?.userSet?.theme??enabledThemes[0];
-    const [themeName, setThemeName] = useState(oldTheme);
-    
-    const [theme, setTheme] = useState(fetchTheme(oldTheme));
-    useEffect(()=>{
-      const setThemeAsync = async ()=>{
-        const newTheme=await fetchTheme(themeName);
-        console.log(newTheme);
-        setTheme(newTheme);
-      }
 
-      setThemeAsync();
-    },[themeName]);
-
-  return (
+    const [theme,setTheme]= useState({});
+    console.log('theme_in_appjs',theme);
+    return (
+    <SessionProvider session={{}}>
     <ThemeProvider theme={theme}>
-      <SessionProvider session={session}>
-        <ThemeSelector {...{themeName,setThemeName}}/>
-        <Component {...pageProps} session={session} />
-      </SessionProvider>
+        <ThemeSelector {...{setTheme}}/>
+        <Component {...pageProps} />
     </ThemeProvider>
-  );
+    </SessionProvider>
+    );
 }
