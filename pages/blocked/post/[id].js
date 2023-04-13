@@ -32,7 +32,7 @@ export async function getStaticPaths(){
   const paths = await getAllPostIdsForCaching();
   return {
     paths,
-    fallback: true,
+    fallback: false,
   };
 
 }
